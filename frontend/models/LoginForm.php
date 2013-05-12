@@ -58,7 +58,7 @@ class LoginForm extends CFormModel {
 		if (!$this->hasErrors()) {
 			$this->_identity = new UserIdentity($this->username, $this->password);
 			if (!$this->_identity->authenticate()) {
-				if (($user = $this->user) !== null && $user->login_attempts < 100)
+				if (($user = $this->_user) !== null && $user->login_attempts < 100)
 					$user->saveAttributes(array('login_attempts' => $user->login_attempts + 1));
 				$this->addError('username', Yii::t('errors', 'Incorrect username and/or password.'));
 				$this->addError('password', Yii::t('errors', 'Incorrect username and/or password.'));
@@ -109,7 +109,7 @@ class LoginForm extends CFormModel {
 	 * @return bool
 	 */
 	public function getRequireCaptcha() {
-		return ($user = $this->user) !== null && $user->login_attempts >= self::MAX_LOGIN_ATTEMPTS;
+		return ($user = $this->_user) !== null && $user->login_attempts >= self::MAX_LOGIN_ATTEMPTS;
 	}
 
 }
